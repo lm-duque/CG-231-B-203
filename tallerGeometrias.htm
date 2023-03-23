@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Objetos Geometry en THREE.js</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+        //Creates scene and camera
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+        //Creates renderer and adds it to the DOM
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        // * luz 1 *
+        var spotLight0 = new THREE.SpotLight(0xcccccc);
+		spotLight0.position.set(-40, 30, -10);
+		spotLight0.lookAt(0,0,0);
+		scene.add(spotLight0);
+
+		// * Luz 2 *
+		var ambiColor = "#0c0c0c";
+		var ambientLight = new THREE.AmbientLight(ambiColor);
+		scene.add(ambientLight);
+
+        // * Cubo *
+
+        // BoxGeometry (hacer la geometria)
+        var geometry = new THREE.BoxGeometry( 1, 1, 1, 2, 2, 2 );
+        // Material aplicar al cubo (green)
+        //var material = new THREE.MeshNormalMaterial();
+        var material = new THREE.MeshNormalMaterial( { color: 0x00ff00} );
+        // Aplicar material para BoxGeometry
+        var cube = new THREE.Mesh( geometry, material );
+        // Adicionar el cubo a la escena
+        scene.add( cube );
+
+        // * Esfera *
+
+        // SphereGeometry (hacer la geometria)
+        var geometry = new THREE.SphereGeometry( 1, 16, 16 );
+        // Material aplicar a la esfera (red)
+        var material = new THREE.MeshBasicMaterial( { color: 0xAA0000, wireframe: true } );
+        // Aplicar material para SphereGeometry
+        var sphere = new THREE.Mesh( geometry, material );
+        // Adicionar la esfera a la escena
+        scene.add( sphere );
+        sphere.position.x = -2;
+
+        // * Cono *
+
+        // ConeGeometry (hacer la geometria)
+        var geometry = new THREE.ConeGeometry( 1, 2, 16 );
+        // Material aplicar a la cono (blue)
+        var material = new THREE.MeshPhongMaterial( { color: 0x0000AA} );
+        // Aplicar material para SphereGeometry
+        var cone = new THREE.Mesh( geometry, material );
+        // Adicionar la esfera a la escena
+        scene.add( cone );
+        cone.position.x = 2;
+        
+        //Sets camera's distance away from cube (using this explanation only
+        //for simplicity's sake - in reality this actually sets the 'depth'
+        //of the camera's position)
+
+        camera.position.z = 5;
+
+        
+        //Rendering
+        var delta = 0.005;
+
+        function renderiza() {
+        requestAnimationFrame( renderiza );
+        cube.rotation.x -= 2*delta;
+        sphere.rotation.y -= 2*delta;
+        cone.rotation.z -= 2*delta;
+        renderer.render( scene, camera );
+        }
+        renderiza();
+        
+    </script>
+</body>
+</html>
